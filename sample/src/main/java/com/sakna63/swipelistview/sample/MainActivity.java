@@ -1,9 +1,16 @@
 package com.sakna63.swipelistview.sample;
 
 import android.app.Activity;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import com.fortysevendeg.swipelistview.SwipeListView;
+
+import java.util.List;
 
 
 public class MainActivity extends Activity {
@@ -12,6 +19,19 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SwipeListView listview = (SwipeListView) findViewById(R.id.swipe_list);
+//        ListView listview = (ListView) findViewById(R.id.swipe_list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, R.id.text);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        listview.setAdapter(adapter);
+
+        PackageManager pm = this.getPackageManager();
+        List<ApplicationInfo> list = pm.getInstalledApplications(0);
+        for (ApplicationInfo info : list) {
+            Log.d(MainActivity.class.getSimpleName(), info.packageName);
+            adapter.add(info.packageName);
+        }
     }
 
 
