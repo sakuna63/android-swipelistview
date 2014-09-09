@@ -20,10 +20,12 @@
 
 package com.fortysevendeg.swipelistview;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Handler;
-import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -33,18 +35,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.view.ViewHelper;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.nineoldandroids.view.ViewHelper.setAlpha;
-import static com.nineoldandroids.view.ViewHelper.setTranslationX;
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 /**
  * Touch listener impl for the SwipeListView
@@ -425,12 +418,12 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
      */
     protected void reloadSwipeStateInView(View frontView, int position) {
         if (!opened.get(position)) {
-            setTranslationX(frontView, 0.0f);
+            frontView.setTranslationX(0.0f);
         } else {
             if (openedRight.get(position)) {
-                setTranslationX(frontView, swipeListView.getWidth());
+                frontView.setTranslationX(swipeListView.getWidth());
             } else {
-                setTranslationX(frontView, -swipeListView.getWidth());
+                frontView.setTranslationX(-swipeListView.getWidth());
             }
         }
 
@@ -533,7 +526,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
      * @param position list position
      */
     private void generateChoiceAnimate(final View view, final int position) {
-        animate(view)
+        view.animate()
                 .translationX(0)
                 .setDuration(animationTime)
                 .setListener(new AnimatorListenerAdapter() {
@@ -571,7 +564,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
             alpha = 0;
         }
 
-        animate(view)
+        view.animate()
                 .translationX(moveTo)
                 .alpha(alpha)
                 .setDuration(animationTime)
@@ -608,7 +601,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
             }
         }
 
-        animate(view)
+        view.animate()
                 .translationX(moveTo)
                 .setDuration(animationTime)
                 .setListener(new AnimatorListenerAdapter() {
@@ -744,7 +737,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
             viewWidth = swipeListView.getWidth();
         }
 
-        switch (MotionEventCompat.getActionMasked(motionEvent)) {
+        switch (motionEvent.getActionMasked()) {
             case MotionEvent.ACTION_DOWN: {
                 if (paused && downPosition != ListView.INVALID_POSITION) {
                     return false;
@@ -907,7 +900,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                     swipeListView.requestDisallowInterceptTouchEvent(true);
                     MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);
                     cancelEvent.setAction(MotionEvent.ACTION_CANCEL |
-                            (MotionEventCompat.getActionIndex(motionEvent) << MotionEventCompat.ACTION_POINTER_INDEX_SHIFT));
+                            (motionEvent.getActionIndex() << motionEvent.ACTION_POINTER_INDEX_SHIFT));
                     swipeListView.onTouchEvent(cancelEvent);
                     if (swipeCurrentAction == SwipeListView.SWIPE_ACTION_CHOICE) {
                         backView.setVisibility(View.GONE);
@@ -946,7 +939,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
      */
     public void move(float deltaX) {
         swipeListView.onMove(downPosition, deltaX);
-        float posX = ViewHelper.getX(frontView);
+        float posX = frontView.getX();
         if (opened.get(downPosition)) {
             posX += openedRight.get(downPosition) ? -viewWidth + rightOffset : viewWidth - leftOffset;
         }
@@ -975,18 +968,18 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
             }
         }
         if (swipeCurrentAction == SwipeListView.SWIPE_ACTION_DISMISS) {
-            setTranslationX(parentView, deltaX);
-            setAlpha(parentView, Math.max(0f, Math.min(1f,
+            parentView.setTranslationX(deltaX);
+            parentView.setAlpha(Math.max(0f, Math.min(1f,
                     1f - 2f * Math.abs(deltaX) / viewWidth)));
         } else if (swipeCurrentAction == SwipeListView.SWIPE_ACTION_CHOICE) {
             if ((swipingRight && deltaX > 0 && posX < DISPLACE_CHOICE)
                     || (!swipingRight && deltaX < 0 && posX > -DISPLACE_CHOICE)
                     || (swipingRight && deltaX < DISPLACE_CHOICE)
                     || (!swipingRight && deltaX > -DISPLACE_CHOICE)) {
-                setTranslationX(frontView, deltaX);
+                frontView.setTranslationX(deltaX);
             }
         } else {
-            setTranslationX(frontView, deltaX);
+            frontView.setTranslationX(deltaX);
         }
     }
 
@@ -1095,8 +1088,8 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
         for (PendingDismissData pendingDismiss : pendingDismisses) {
             // Reset view presentation
             if (pendingDismiss.view != null) {
-                setAlpha(pendingDismiss.view, 1f);
-                setTranslationX(pendingDismiss.view, 0);
+                pendingDismiss.view.setAlpha(1f);
+                pendingDismiss.view.setTranslationX(0);
                 lp = pendingDismiss.view.getLayoutParams();
                 lp.height = originalHeight;
                 pendingDismiss.view.setLayoutParams(lp);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="2" >
+
+    <dataSet config="debug" >
+        <source path="/Users/sakuna63/.ghq/github.com/sakuna63/android-swipelistview/swipelistview/build/intermediates/bundles/debug/assets" />
+    </dataSet>
+    <dataSet config="main" >
+        <source path="/Users/sakuna63/.ghq/github.com/sakuna63/android-swipelistview/swipelistview/src/androidTest/assets" />
+    </dataSet>
+
+</merger>

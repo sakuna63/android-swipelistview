@@ -21,8 +21,6 @@ package com.fortysevendeg.swipelistview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewConfigurationCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,7 +40,7 @@ public class SwipeListView extends ListView {
      * log tag
     */
     public final static String TAG = "SwipeListView";
-	
+
     /**
     * whether debug
     */
@@ -214,7 +212,7 @@ public class SwipeListView extends ListView {
         }
 
         final ViewConfiguration configuration = ViewConfiguration.get(getContext());
-        touchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+        touchSlop = configuration.getScaledPagingTouchSlop();
         touchListener = new SwipeListViewTouchListener(this, swipeFrontView, swipeBackView);
         if (swipeAnimationTime > 0) {
             touchListener.setAnimationTime(swipeAnimationTime);
@@ -632,7 +630,7 @@ public class SwipeListView extends ListView {
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        int action = MotionEventCompat.getActionMasked(ev);
+        int action = ev.getActionMasked();
         final float x = ev.getX();
         final float y = ev.getY();
 
