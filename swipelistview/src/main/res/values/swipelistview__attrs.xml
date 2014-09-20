@@ -20,8 +20,11 @@
 
     <declare-styleable name="SwipeListView">
         <attr name="swipeAnimationTime" format="integer"/>
-        <attr name="swipeOffsetLeft" format="dimension"/>
-        <attr name="swipeOffsetRight" format="dimension"/>
+        <attr name="swipeOffsetLeftPer" format="float"/>
+        <attr name="swipeOffsetRightPer" format="float"/>
+        <!--<attr name="swipeOffsetLeft" format="dimension"/>-->
+        <!--<attr name="swipeOffsetRight" format="dimension"/>-->
+        <attr name="pullDirection" format="boolean"/>
         <attr name="swipeCloseAllItemsWhenMoveList" format="boolean"/>
         <attr name="swipeFrontView" format="reference"/>
         <attr name="swipeBackView" format="reference"/>
@@ -34,12 +37,12 @@
         <attr name="swipeActionLeft" format="enum">
             <enum name="reveal" value="0"/>
             <enum name="dismiss" value="1"/>
-            <enum name="choice" value="2"/>
+            <enum name="none" value="2"/>
         </attr>
         <attr name="swipeActionRight" format="enum">
             <enum name="reveal" value="0"/>
             <enum name="dismiss" value="1"/>
-            <enum name="choice" value="2"/>
+            <enum name="none" value="2"/>
         </attr>
         <attr name="swipeDrawableChecked" format="reference"/>
         <attr name="swipeDrawableUnchecked" format="reference"/>

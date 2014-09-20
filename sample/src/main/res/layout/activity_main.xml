@@ -9,6 +9,12 @@
         android:id="@+id/swipe_list"
         swipe:swipeFrontView="@+id/front_view"
         swipe:swipeBackView="@+id/back_view"
+        swipe:swipeMode="both"
+        swipe:swipeOffsetLeftPer="0.5"
+        swipe:swipeOffsetRightPer="0.5"
+        swipe:swipeActionLeft="dismiss"
+        swipe:swipeActionRight="none"
+        swipe:pullDirection="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </RelativeLayout>

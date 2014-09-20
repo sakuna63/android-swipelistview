@@ -18,7 +18,7 @@ public class BaseSwipeListViewListener implements SwipeListViewListener {
     }
 
     @Override
-    public void onStartOpen(int position, int action, boolean right) {
+    public void onStartOpen(int position, boolean right) {
     }
 
     @Override

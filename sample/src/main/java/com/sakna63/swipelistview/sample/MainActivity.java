@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import com.fortysevendeg.swipelistview.SwipeListView;
+import com.fortysevendeg.swipelistview.SwipeListViewListener;
 
 import java.util.List;
 
@@ -25,6 +26,70 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         SwipeListView listview = (SwipeListView) findViewById(R.id.swipe_list);
+        listview.setSwipeListViewListener(new SwipeListViewListener() {
+            @Override
+            public void onOpened(int position, boolean toRight) {
+                Log.d(TAG, "onOpened");
+            }
+
+            @Override
+            public void onClosed(int position, boolean fromRight) {
+                Log.d(TAG, "onClosed");
+            }
+
+            @Override
+            public void onListChanged() {
+                Log.d(TAG, "onListChanged");
+            }
+
+            @Override
+            public void onMove(int position, float x) {
+                Log.d(TAG, "onMove");
+            }
+
+            @Override
+            public void onStartOpen(int position, boolean right) {
+                Log.d(TAG, "onStartOpen");
+            }
+
+            @Override
+            public void onStartClose(int position, boolean right) {
+                Log.d(TAG, "onStartClose");
+
+            }
+
+            @Override
+            public void onClickFrontView(int position) {
+                Log.d(TAG, "onClickFrontView");
+            }
+
+            @Override
+            public void onClickBackView(int position) {
+                Log.d(TAG, "onClickBackView");
+            }
+
+            @Override
+            public void onDismiss(int[] reverseSortedPositions) {
+                Log.d(TAG, "onDismiss");
+            }
+
+            @Override
+            public int onChangeSwipeMode(int position) {
+                Log.d(TAG, "onChangeSwipeMode");
+                return 0;
+            }
+
+            @Override
+            public void onChoiceChanged(int position, boolean selected) { }
+            @Override
+            public void onChoiceStarted() { }
+            @Override
+            public void onChoiceEnded() { }
+            @Override
+            public void onFirstListItem() {  }
+            @Override
+            public void onLastListItem() {  }
+        });
 //        ListView listview = (ListView) findViewById(R.id.swipe_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, R.id.text);
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
