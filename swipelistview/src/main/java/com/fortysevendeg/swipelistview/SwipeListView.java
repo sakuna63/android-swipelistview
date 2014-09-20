@@ -174,7 +174,6 @@ public class SwipeListView extends ListView {
     private void init(AttributeSet attrs) {
 
         int swipeMode = SWIPE_MODE_BOTH;
-        boolean swipeOpenOnLongPress = true;
         boolean swipeCloseAllItemsWhenMoveList = true;
         long swipeAnimationTime = 0;
         float swipeOffsetLeft = 0;
@@ -192,7 +191,6 @@ public class SwipeListView extends ListView {
             swipeActionRight = styled.getInt(R.styleable.SwipeListView_swipeActionRight, SWIPE_ACTION_REVEAL);
             swipeOffsetLeft = styled.getDimension(R.styleable.SwipeListView_swipeOffsetLeft, 0);
             swipeOffsetRight = styled.getDimension(R.styleable.SwipeListView_swipeOffsetRight, 0);
-            swipeOpenOnLongPress = styled.getBoolean(R.styleable.SwipeListView_swipeOpenOnLongPress, true);
             swipeAnimationTime = styled.getInteger(R.styleable.SwipeListView_swipeAnimationTime, 0);
             swipeCloseAllItemsWhenMoveList = styled.getBoolean(R.styleable.SwipeListView_swipeCloseAllItemsWhenMoveList, true);
             swipeDrawableChecked = styled.getResourceId(R.styleable.SwipeListView_swipeDrawableChecked, 0);
@@ -223,7 +221,6 @@ public class SwipeListView extends ListView {
         touchListener.setSwipeActionRight(swipeActionRight);
         touchListener.setSwipeMode(swipeMode);
         touchListener.setSwipeClosesAllItemsWhenListMoves(swipeCloseAllItemsWhenMoveList);
-        touchListener.setSwipeOpenOnLongPress(swipeOpenOnLongPress);
         touchListener.setSwipeDrawableChecked(swipeDrawableChecked);
         touchListener.setSwipeDrawableUnchecked(swipeDrawableUnchecked);
         setOnTouchListener(touchListener);
@@ -560,15 +557,6 @@ public class SwipeListView extends ListView {
      */
     public void setSwipeCloseAllItemsWhenMoveList(boolean swipeCloseAllItemsWhenMoveList) {
         touchListener.setSwipeClosesAllItemsWhenListMoves(swipeCloseAllItemsWhenMoveList);
-    }
-
-    /**
-     * Sets if the user can open an item with long pressing on cell
-     *
-     * @param swipeOpenOnLongPress
-     */
-    public void setSwipeOpenOnLongPress(boolean swipeOpenOnLongPress) {
-        touchListener.setSwipeOpenOnLongPress(swipeOpenOnLongPress);
     }
 
     /**

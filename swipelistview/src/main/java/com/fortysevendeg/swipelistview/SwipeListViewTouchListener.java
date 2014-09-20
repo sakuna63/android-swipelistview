@@ -47,7 +47,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
     private static final int DISPLACE_CHOICE = 80;
 
     private int swipeMode = SwipeListView.SWIPE_MODE_BOTH;
-    private boolean swipeOpenOnLongPress = true;
     private boolean swipeClosesAllItemsWhenListMoves = true;
 
     private int swipeFrontView = 0;
@@ -138,17 +137,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                 swipeListView.onClickFrontView(downPosition);
             }
         });
-        if (swipeOpenOnLongPress) {
-            frontView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    if(downPosition >= 0){
-                        openAnimate(downPosition);
-                    }
-                    return false;
-                }
-            });
-        }
     }
 
     /**
@@ -211,15 +199,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
      */
     public void setSwipeClosesAllItemsWhenListMoves(boolean swipeClosesAllItemsWhenListMoves) {
         this.swipeClosesAllItemsWhenListMoves = swipeClosesAllItemsWhenListMoves;
-    }
-
-    /**
-     * Set if the user can open an item with long press on cell
-     *
-     * @param swipeOpenOnLongPress
-     */
-    public void setSwipeOpenOnLongPress(boolean swipeOpenOnLongPress) {
-        this.swipeOpenOnLongPress = swipeOpenOnLongPress;
     }
 
     /**
@@ -757,7 +736,9 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                     int childPosition = swipeListView.getPositionForView(child);
 
                     // dont allow swiping if this is on the header or footer or IGNORE_ITEM_VIEW_TYPE or enabled is false on the adapter
-                    boolean allowSwipe = swipeListView.getAdapter().isEnabled(childPosition) && swipeListView.getAdapter().getItemViewType(childPosition) >= 0;
+                    boolean isEnabled = swipeListView.getAdapter().isEnabled(childPosition);
+                    boolean isIgnored = swipeListView.getAdapter().getItemViewType(childPosition) >= 0;
+                    boolean allowSwipe = isEnabled && isIgnored;
 
                     if (allowSwipe && rect.contains(x, y)) {
                         setParentView(child);
@@ -910,6 +891,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                 if (swiping && downPosition != ListView.INVALID_POSITION) {
                     if (opened.get(downPosition)) {
                         deltaX += openedRight.get(downPosition) ? viewWidth - rightOffset : -viewWidth + leftOffset;
+                        deltaX *= 0.5f;
                     }
                     move(deltaX);
                     return true;
@@ -967,6 +949,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                 backView.setVisibility(View.VISIBLE);
             }
         }
+
         if (swipeCurrentAction == SwipeListView.SWIPE_ACTION_DISMISS) {
             parentView.setTranslationX(deltaX);
             parentView.setAlpha(Math.max(0f, Math.min(1f,

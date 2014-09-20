@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
@@ -14,6 +17,7 @@ import java.util.List;
 
 
 public class MainActivity extends Activity {
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,13 @@ public class MainActivity extends Activity {
 //        ListView listview = (ListView) findViewById(R.id.swipe_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, R.id.text);
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        listview.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemLongClick");
+                return true;
+            }
+        });
         listview.setAdapter(adapter);
 
         PackageManager pm = this.getPackageManager();
