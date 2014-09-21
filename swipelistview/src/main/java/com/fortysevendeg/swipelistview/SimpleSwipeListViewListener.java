@@ -1,6 +1,6 @@
 package com.fortysevendeg.swipelistview;
 
-public class BaseSwipeListViewListener implements SwipeListViewListener {
+public class SimpleSwipeListViewListener implements SwipeListViewListener {
     @Override
     public void onOpened(int position, boolean toRight) {
     }
@@ -43,22 +43,15 @@ public class BaseSwipeListViewListener implements SwipeListViewListener {
     }
 
     @Override
-    public void onChoiceChanged(int position, boolean selected) {
-    }
-
-    @Override
-    public void onChoiceStarted() {
-    }
-
-    @Override
-    public void onChoiceEnded() {
-    }
-
-    @Override
     public void onFirstListItem() {
     }
 
     @Override
     public void onLastListItem() {
+    }
+
+    @Override
+    public void onScrollBottom() {
+
     }
 }

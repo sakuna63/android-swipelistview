@@ -29,8 +29,6 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import java.util.List;
-
 /**
  * ListView subclass that provides the swipe functionality
  */
@@ -175,8 +173,8 @@ public class SwipeListView extends ListView {
         float swipeOffsetRightPer = 1f;
 //        float swipeOffsetLeft = 0;
 //        float swipeOffsetRight = 0;
-        int swipeDrawableChecked = 0;
-        int swipeDrawableUnchecked = 0;
+//        int swipeDrawableChecked = 0;
+//        int swipeDrawableUnchecked = 0;
 
         int swipeActionLeft = SWIPE_ACTION_REVEAL;
         int swipeActionRight = SWIPE_ACTION_REVEAL;
@@ -193,8 +191,8 @@ public class SwipeListView extends ListView {
 //            swipeOffsetRight = styled.getDimension(R.styleable.SwipeListView_swipeOffsetRight, -1);
             swipeAnimationTime = styled.getInteger(R.styleable.SwipeListView_swipeAnimationTime, 0);
             swipeCloseAllItemsWhenMoveList = styled.getBoolean(R.styleable.SwipeListView_swipeCloseAllItemsWhenMoveList, true);
-            swipeDrawableChecked = styled.getResourceId(R.styleable.SwipeListView_swipeDrawableChecked, 0);
-            swipeDrawableUnchecked = styled.getResourceId(R.styleable.SwipeListView_swipeDrawableUnchecked, 0);
+//            swipeDrawableChecked = styled.getResourceId(R.styleable.SwipeListView_swipeDrawableChecked, 0);
+//            swipeDrawableUnchecked = styled.getResourceId(R.styleable.SwipeListView_swipeDrawableUnchecked, 0);
             swipeFrontView = styled.getResourceId(R.styleable.SwipeListView_swipeFrontView, 0);
             swipeBackView = styled.getResourceId(R.styleable.SwipeListView_swipeBackView, 0);
             styled.recycle();
@@ -223,8 +221,6 @@ public class SwipeListView extends ListView {
         touchListener.setSwipeActionRight(swipeActionRight);
         touchListener.setSwipeMode(swipeMode);
         touchListener.setSwipeClosesAllItemsWhenListMoves(swipeCloseAllItemsWhenMoveList);
-        touchListener.setSwipeDrawableChecked(swipeDrawableChecked);
-        touchListener.setSwipeDrawableUnchecked(swipeDrawableUnchecked);
         setOnTouchListener(touchListener);
         setOnScrollListener(touchListener.makeScrollListener());
     }
@@ -236,7 +232,6 @@ public class SwipeListView extends ListView {
      * @param position    position in list
      */
     public void recycle(View convertView, int position) {
-        touchListener.reloadChoiceStateInView(convertView.findViewById(swipeFrontView), position);
         touchListener.reloadSwipeStateInView(convertView.findViewById(swipeFrontView), position);
 
         // Clean pressed state (if dismiss is fire from a cell, to this cell, with a press drawable, in a swipelistview
@@ -248,42 +243,7 @@ public class SwipeListView extends ListView {
         }
     }
 
-    /**
-     * Get if item is selected
-     *
-     * @param position position in list
-     * @return
-     */
-    public boolean isChecked(int position) {
-        return touchListener.isChecked(position);
-    }
-
-    /**
-     * Get positions selected
-     *
-     * @return
-     */
-    public List<Integer> getPositionsSelected() {
-        return touchListener.getPositionsSelected();
-    }
-
-    /**
-     * Count selected
-     *
-     * @return
-     */
-    public int getCountSelected() {
-        return touchListener.getCountSelected();
-    }
-
-    /**
-     * Unselected choice state in item
-     */
-    public void unselectedChoiceStates() {
-        touchListener.unselectedChoiceStates();
-    }
-
-    /**
+   /**
      * @see android.widget.ListView#setAdapter(android.widget.ListAdapter)
      */
     @Override
@@ -316,30 +276,6 @@ public class SwipeListView extends ListView {
             onDismiss(dismissPositions);
             touchListener.resetPendingDismisses();
         }
-    }
-
-    /**
-     * Dismiss items selected
-     */
-    public void dismissSelected() {
-        List<Integer> list = touchListener.getPositionsSelected();
-        int[] dismissPositions = new int[list.size()];
-        int height = 0;
-        for (int i = 0; i < list.size(); i++) {
-            int position = list.get(i);
-            dismissPositions[i] = position;
-            int auxHeight = touchListener.dismiss(position);
-            if (auxHeight > 0) {
-                height = auxHeight;
-            }
-        }
-        if (height > 0) {
-            touchListener.handlerPendingDismisses(height);
-        } else {
-            onDismiss(dismissPositions);
-            touchListener.resetPendingDismisses();
-        }
-        touchListener.returnOldActions();
     }
 
     /**
@@ -442,36 +378,6 @@ public class SwipeListView extends ListView {
     }
 
     /**
-     * Notifies onChoiceChanged
-     *
-     * @param position position that choice
-     * @param selected if item is selected or not
-     */
-    protected void onChoiceChanged(int position, boolean selected) {
-        if (swipeListViewListener != null && position != ListView.INVALID_POSITION) {
-            swipeListViewListener.onChoiceChanged(position, selected);
-        }
-    }
-
-    /**
-     * User start choice items
-     */
-    protected void onChoiceStarted() {
-        if (swipeListViewListener != null) {
-            swipeListViewListener.onChoiceStarted();
-        }
-    }
-
-    /**
-     * User end choice items
-     */
-    protected void onChoiceEnded() {
-        if (swipeListViewListener != null) {
-            swipeListViewListener.onChoiceEnded();
-        }
-    }
-
-    /**
      * User is in first item of list
      */
     protected void onFirstListItem() {
@@ -486,6 +392,15 @@ public class SwipeListView extends ListView {
     protected void onLastListItem() {
         if (swipeListViewListener != null) {
             swipeListViewListener.onLastListItem();
+        }
+    }
+
+    /**
+     * User is in bottom of listview
+     */
+    protected void onScrollBottom() {
+        if (swipeListViewListener != null) {
+            swipeListViewListener.onScrollBottom();
         }
     }
 
@@ -688,5 +603,4 @@ public class SwipeListView extends ListView {
     public void closeOpenedItems() {
         touchListener.closeOpenedItems();
     }
-
 }

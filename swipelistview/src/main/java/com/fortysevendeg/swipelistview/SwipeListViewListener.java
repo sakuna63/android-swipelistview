@@ -91,23 +91,6 @@ public interface SwipeListViewListener {
     int onChangeSwipeMode(int position);
 
     /**
-     * Called when user choice item
-     * @param position position that choice
-     * @param selected if item is selected or not
-     */
-    void onChoiceChanged(int position, boolean selected);
-
-    /**
-     * User start choice items
-     */
-    void onChoiceStarted();
-
-    /**
-     * User end choice items
-     */
-    void onChoiceEnded();
-
-    /**
      * User is in first item of list
      */
     void onFirstListItem();
@@ -117,4 +100,9 @@ public interface SwipeListViewListener {
      */
     void onLastListItem();
 
+
+    /**
+     * User is bottom of listview
+     */
+    void onScrollBottom();
 }

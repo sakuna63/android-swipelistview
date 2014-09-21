@@ -44,8 +44,8 @@
             <enum name="dismiss" value="1"/>
             <enum name="none" value="2"/>
         </attr>
-        <attr name="swipeDrawableChecked" format="reference"/>
-        <attr name="swipeDrawableUnchecked" format="reference"/>
+        <!--<attr name="swipeDrawableChecked" format="reference"/>-->
+        <!--<attr name="swipeDrawableUnchecked" format="reference"/>-->
     </declare-styleable>
 
 </resources>

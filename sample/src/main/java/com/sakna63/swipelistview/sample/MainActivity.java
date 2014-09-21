@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import com.fortysevendeg.swipelistview.SwipeListView;
 import com.fortysevendeg.swipelistview.SwipeListViewListener;
@@ -76,30 +73,35 @@ public class MainActivity extends Activity {
             @Override
             public int onChangeSwipeMode(int position) {
                 Log.d(TAG, "onChangeSwipeMode");
-                return 0;
+                return SwipeListView.SWIPE_MODE_BOTH;
             }
 
-            @Override
-            public void onChoiceChanged(int position, boolean selected) { }
-            @Override
-            public void onChoiceStarted() { }
-            @Override
-            public void onChoiceEnded() { }
             @Override
             public void onFirstListItem() {  }
             @Override
             public void onLastListItem() {  }
+
+            @Override
+            public void onScrollBottom() {
+                Log.d(TAG, "onScrollBottom");
+            }
         });
+//        listview.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.d(TAG, "onItemClick");
+//            }
+//        });
 //        ListView listview = (ListView) findViewById(R.id.swipe_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, R.id.text);
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        listview.setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemLongClick");
-                return true;
-            }
-        });
+//        listview.setOnItemLongClickListener(new OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.d(TAG, "onItemLongClick");
+//                return true;
+//            }
+//        });
         listview.setAdapter(adapter);
 
         PackageManager pm = this.getPackageManager();
@@ -109,7 +111,6 @@ public class MainActivity extends Activity {
             adapter.add(info.packageName);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

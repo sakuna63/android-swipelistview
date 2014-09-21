@@ -45,8 +45,6 @@ import java.util.List;
  * Touch listener impl for the SwipeListView
  */
 public class SwipeListViewTouchListener implements View.OnTouchListener {
-    private static final int DISPLACE_CHOICE = 80;
-
     private int swipeMode = SwipeListView.SWIPE_MODE_BOTH;
     private boolean swipeClosesAllItemsWhenListMoves = true;
 
@@ -65,9 +63,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
 
     private float leftOffsetPer = 1f;
     private float rightOffsetPer = 1f;
-
-    private int swipeDrawableChecked = 0;
-    private int swipeDrawableUnchecked = 0;
 
     // Fixed properties
     private SwipeListView swipeListView;
@@ -92,7 +87,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
     private List<Boolean> opened = new ArrayList<Boolean>();
     private List<Boolean> openedRight = new ArrayList<Boolean>();
     private boolean listViewMoving;
-    private List<Boolean> checked = new ArrayList<Boolean>();
     private int oldSwipeActionRight;
     private int oldSwipeActionLeft;
     private boolean pullDirection;
@@ -258,24 +252,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
     }
 
     /**
-     * Set drawable checked (only SWIPE_ACTION_CHOICE)
-     *
-     * @param swipeDrawableChecked drawable
-     */
-    protected void setSwipeDrawableChecked(int swipeDrawableChecked) {
-        this.swipeDrawableChecked = swipeDrawableChecked;
-    }
-
-    /**
-     * Set drawable unchecked (only SWIPE_ACTION_CHOICE)
-     *
-     * @param swipeDrawableUnchecked drawable
-     */
-    protected void setSwipeDrawableUnchecked(int swipeDrawableUnchecked) {
-        this.swipeDrawableUnchecked = swipeDrawableUnchecked;
-    }
-
-    /**
      * Adds new items when adapter is modified
      */
     public void resetItems() {
@@ -284,7 +260,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
             for (int i = opened.size(); i <= count; i++) {
                 opened.add(false);
                 openedRight.add(false);
-                checked.add(false);
             }
         }
     }
@@ -316,29 +291,12 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
     }
 
     /**
-     * Unselected choice state in item
-     */
-    protected void unselectedChoiceStates() {
-        int start = swipeListView.getFirstVisiblePosition();
-        int end = swipeListView.getLastVisiblePosition();
-        for (int i = 0; i < checked.size(); i++) {
-            if (checked.get(i) && i >= start && i <= end) {
-                reloadChoiceStateInView(swipeListView.getChildAt(i - start).findViewById(swipeFrontView), i);
-            }
-            checked.set(i, false);
-        }
-        swipeListView.onChoiceEnded();
-        returnOldActions();
-    }
-
-    /**
      * Dismiss an item.
      * @param position is the position of the item to delete.
      * @return 0 if the item is not visible. Otherwise return the height of the cell to dismiss.
      */
     protected int dismiss(int position) {
         opened.remove(position);
-        checked.remove(position);
         int start = swipeListView.getFirstVisiblePosition();
         int end = swipeListView.getLastVisiblePosition();
         View view = swipeListView.getChildAt(position - start);
@@ -349,20 +307,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
         } else {
             pendingDismisses.add(new PendingDismissData(position, null));
             return 0;
-        }
-    }
-
-    /**
-     * Draw cell for display if item is selected or not
-     *
-     * @param frontView view to draw
-     * @param position  position in list
-     */
-    protected void reloadChoiceStateInView(View frontView, int position) {
-        if (isChecked(position)) {
-            if (swipeDrawableChecked > 0) frontView.setBackgroundResource(swipeDrawableChecked);
-        } else {
-            if (swipeDrawableUnchecked > 0) frontView.setBackgroundResource(swipeDrawableUnchecked);
         }
     }
 
@@ -382,49 +326,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
             }
         }
 
-    }
-
-    /**
-     * Get if item is selected
-     *
-     * @param position position in list
-     * @return
-     */
-    protected boolean isChecked(int position) {
-        return position < checked.size() && checked.get(position);
-    }
-
-    /**
-     * Count selected
-     *
-     * @return
-     */
-    protected int getCountSelected() {
-        int count = 0;
-        for (int i = 0; i < checked.size(); i++) {
-            if (checked.get(i)) {
-                count++;
-            }
-        }
-        if(SwipeListView.DEBUG){
-            Log.d(SwipeListView.TAG, "selected: " + count);
-        }
-        return count;
-    }
-
-    /**
-     * Get positions selected
-     *
-     * @return
-     */
-    protected List<Integer> getPositionsSelected() {
-        List<Integer> list = new ArrayList<Integer>();
-        for (int i = 0; i < checked.size(); i++) {
-            if (checked.get(i)) {
-                list.add(i);
-            }
-        }
-        return list;
     }
 
     /**
