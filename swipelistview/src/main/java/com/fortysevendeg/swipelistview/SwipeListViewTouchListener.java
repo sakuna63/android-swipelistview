@@ -702,19 +702,21 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                 }
 
                 if (deltaXAbs > slop && velocityY < velocityX) {
+                    if (!swiping || swipingRight != (deltaX > 0)) {
+                        if (opened.get(downPosition)) {
+                            swipeListView.onStartClose(downPosition, swipingRight);
+                        } else {
+                            swipeListView.onStartOpen(downPosition, swipingRight);
+                        }
+                    }
                     swiping = true;
-                    swipingRight = (deltaX > 0);
+                    swipingRight = deltaX > 0;
 
                     if (SwipeListView.DEBUG) {
                         Log.d(SwipeListView.TAG, "deltaX: " + deltaX + " - swipingRight: " + swipingRight);
                     }
 
-                    // notify close or open via listener
-                    if (opened.get(downPosition)) {
-                        swipeListView.onStartClose(downPosition, swipingRight);
-                    } else {
-                        swipeListView.onStartOpen(downPosition, swipingRight);
-                    }
+
 
                     swipeListView.requestDisallowInterceptTouchEvent(true);
                     MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);
