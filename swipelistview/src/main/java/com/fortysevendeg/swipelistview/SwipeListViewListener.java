@@ -65,18 +65,6 @@ public interface SwipeListViewListener {
     void onStartClose(int position, boolean right);
 
     /**
-     * Called when user clicks on the front view
-     * @param position list item
-     */
-    void onClickFrontView(int position);
-
-    /**
-     * Called when user clicks on the back view
-     * @param position list item
-     */
-    void onClickBackView(int position);
-
-    /**
      * Called when user dismisses items
      * @param reverseSortedPositions Items dismissed
      */

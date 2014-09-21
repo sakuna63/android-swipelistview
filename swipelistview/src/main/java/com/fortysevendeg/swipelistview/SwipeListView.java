@@ -332,28 +332,6 @@ public class SwipeListView extends ListView {
     }
 
     /**
-     * Notifies onClickFrontView
-     *
-     * @param position item clicked
-     */
-    protected void onClickFrontView(int position) {
-        if (swipeListViewListener != null && position != ListView.INVALID_POSITION) {
-            swipeListViewListener.onClickFrontView(position);
-        }
-    }
-
-    /**
-     * Notifies onClickBackView
-     *
-     * @param position back item clicked
-     */
-    protected void onClickBackView(int position) {
-        if (swipeListViewListener != null && position != ListView.INVALID_POSITION) {
-            swipeListViewListener.onClickBackView(position);
-        }
-    }
-
-    /**
      * Notifies onOpened
      *
      * @param position Item opened

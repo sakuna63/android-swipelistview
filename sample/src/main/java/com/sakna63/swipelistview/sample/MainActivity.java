@@ -52,17 +52,6 @@ public class MainActivity extends Activity {
             @Override
             public void onStartClose(int position, boolean right) {
                 Log.d(TAG, "onStartClose");
-
-            }
-
-            @Override
-            public void onClickFrontView(int position) {
-                Log.d(TAG, "onClickFrontView");
-            }
-
-            @Override
-            public void onClickBackView(int position) {
-                Log.d(TAG, "onClickBackView");
             }
 
             @Override

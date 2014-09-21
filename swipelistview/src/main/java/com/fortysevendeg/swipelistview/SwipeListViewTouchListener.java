@@ -78,7 +78,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
     private int downPosition;
     private View parentView;
     private View frontView;
-    private View backView;
     private boolean paused;
 
     private int swipeActionLeft = SwipeListView.SWIPE_ACTION_REVEAL;
@@ -127,27 +126,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
      */
     private void setFrontView(View frontView) {
         this.frontView = frontView;
-        frontView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                swipeListView.onClickFrontView(downPosition);
-            }
-        });
-    }
-
-    /**
-     * Set current item's back view
-     *
-     * @param backView
-     */
-    private void setBackView(View backView) {
-        this.backView = backView;
-        backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                swipeListView.onClickBackView(downPosition);
-            }
-        });
     }
 
     /**
@@ -456,10 +434,9 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
 
     private void resetCell() {
         if (downPosition != ListView.INVALID_POSITION) {
-            frontView.setClickable(opened.get(downPosition));
-            frontView.setLongClickable(opened.get(downPosition));
+//            frontView.setClickable(opened.get(downPosition));
+//            frontView.setLongClickable(opened.get(downPosition));
             frontView = null;
-            backView = null;
             downPosition = ListView.INVALID_POSITION;
         }
     }
@@ -596,14 +573,11 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                         downX = motionEvent.getRawX();
                         downPosition = childPosition - swipeListView.getHeaderViewsCount();
 
-                        frontView.setClickable(!opened.get(downPosition));
-                        frontView.setLongClickable(!opened.get(downPosition));
+//                        frontView.setClickable(!opened.get(downPosition));
+//                        frontView.setLongClickable(!opened.get(downPosition));
 
                         velocityTracker = VelocityTracker.obtain();
                         velocityTracker.addMovement(motionEvent);
-                        if (swipeBackView > 0) {
-                            setBackView(child.findViewById(swipeBackView));
-                        }
                         break;
                     }
                 }
