@@ -763,8 +763,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
      * @param deltaX delta
      */
     public void move(float deltaX, boolean dismiss) {
-        Log.d(SwipeListViewTouchListener.class.getSimpleName(), "move = " + deltaX);
-
         swipeListView.onMove(downPosition, deltaX);
         float posX = frontView.getX();
         if (opened.get(downPosition)) {

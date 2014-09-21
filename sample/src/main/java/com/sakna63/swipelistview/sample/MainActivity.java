@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import com.fortysevendeg.swipelistview.SwipeListView;
 import com.fortysevendeg.swipelistview.SwipeListViewListener;
@@ -14,6 +19,7 @@ import com.fortysevendeg.swipelistview.SwipeListViewListener;
 import java.util.List;
 
 
+@SuppressWarnings("unchecked")
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -41,7 +47,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onMove(int position, float x) {
-                Log.d(TAG, "onMove");
+//                Log.d(TAG, "onMove");
             }
 
             @Override
@@ -61,7 +67,7 @@ public class MainActivity extends Activity {
 
             @Override
             public int onChangeSwipeMode(int position) {
-                Log.d(TAG, "onChangeSwipeMode");
+//                Log.d(TAG, "onChangeSwipeMode");
                 return SwipeListView.SWIPE_MODE_BOTH;
             }
 
@@ -75,14 +81,32 @@ public class MainActivity extends Activity {
                 Log.d(TAG, "onScrollBottom");
             }
         });
-//        listview.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.d(TAG, "onItemClick");
-//            }
-//        });
+        listview.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemClick");
+            }
+        });
 //        ListView listview = (ListView) findViewById(R.id.swipe_list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, R.id.text);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.text) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+//                view.findViewById(R.id.icon).setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Log.d(TAG, "click icon");
+//                    }
+//                });
+//                view.findViewById(R.id.back_view).setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Log.d(TAG, "click back");
+//                    }
+//                });
+                return view;
+            }
+        };
 //        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 //        listview.setOnItemLongClickListener(new OnItemLongClickListener() {
 //            @Override
@@ -91,6 +115,13 @@ public class MainActivity extends Activity {
 //                return true;
 //            }
 //        });
+        listview.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "onItemLongClick");
+                return true;
+            }
+        });
         listview.setAdapter(adapter);
 
         PackageManager pm = this.getPackageManager();
