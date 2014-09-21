@@ -35,6 +35,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -463,7 +464,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
 
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-                setEnabled(scrollState != AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);
+                setEnabled(scrollState != OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);
                 if (swipeClosesAllItemsWhenListMoves && scrollState == SCROLL_STATE_TOUCH_SCROLL) {
                     closeOpenedItems();
                 }
@@ -471,7 +472,7 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                     listViewMoving = true;
                     setEnabled(false);
                 }
-                if (scrollState != AbsListView.OnScrollListener.SCROLL_STATE_FLING && scrollState != SCROLL_STATE_TOUCH_SCROLL) {
+                if (scrollState != OnScrollListener.SCROLL_STATE_FLING && scrollState != SCROLL_STATE_TOUCH_SCROLL) {
                     listViewMoving = false;
                     downPosition = ListView.INVALID_POSITION;
                     swipeListView.resetScrolling();
@@ -481,10 +482,23 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                         }
                     }, 500);
                 }
+
+                int bottomViewPosition = absListView.getFirstVisiblePosition() + absListView.getChildCount() - 1;
+                boolean isLastItem = (absListView.getCount() - 1) == bottomViewPosition;
+                if (!isLastItem) return;
+
+                int bottom = (absListView.getChildAt(absListView.getChildCount()-1).getBottom() - absListView.getPaddingBottom());
+                boolean isListBottom = bottom == absListView.getHeight();
+                if (!isListBottom) return;
+
+                boolean isScrollStop = scrollState == SCROLL_STATE_IDLE;
+                if (isScrollStop) {
+                    swipeListView.onScrollBottom();
+                }
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (isFirstItem) {
                     boolean onSecondItemList = firstVisibleItem == 1;
                     if (onSecondItemList) {
