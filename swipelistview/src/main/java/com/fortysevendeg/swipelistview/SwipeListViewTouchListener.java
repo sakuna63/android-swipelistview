@@ -652,9 +652,9 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                     }
 
                     // この時点でフリング動作は確定
-                    if (!opened && moveToRight && swipeActionRight == SwipeListView.SWIPE_ACTION_NONE) {
+                    if (!opened && moveToRight && (!swipingRight || swipeActionRight == SwipeListView.SWIPE_ACTION_NONE)) {
                         moveOut = false;
-                    } else if (!opened && !moveToRight && swipeActionLeft == SwipeListView.SWIPE_ACTION_NONE) {
+                    } else if (!opened && !moveToRight && (swipingRight || swipeActionLeft == SwipeListView.SWIPE_ACTION_NONE)) {
                         moveOut = false;
                     // 右に開いている状態で右にフリングは無視
                     } else if (opened && openedRight.get(downPosition) && moveToRight) {
