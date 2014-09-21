@@ -578,11 +578,12 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
 
                         velocityTracker = VelocityTracker.obtain();
                         velocityTracker.addMovement(motionEvent);
-                        break;
+//                        break;
                     }
                 }
-                view.onTouchEvent(motionEvent);
-                return true;
+                // don't steal child click event
+//                view.onTouchEvent(motionEvent);
+//                return false;
             }
             case MotionEvent.ACTION_CANCEL: {
                 if (velocityTracker == null || !swiping || downPosition == ListView.INVALID_POSITION) {
@@ -715,8 +716,6 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
                     if (SwipeListView.DEBUG) {
                         Log.d(SwipeListView.TAG, "deltaX: " + deltaX + " - swipingRight: " + swipingRight);
                     }
-
-
 
                     swipeListView.requestDisallowInterceptTouchEvent(true);
                     MotionEvent cancelEvent = MotionEvent.obtain(motionEvent);

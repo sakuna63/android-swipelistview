@@ -13,9 +13,9 @@
 
     <LinearLayout android:id="@+id/front_view"
         android:layout_width="match_parent" android:layout_height="50dp"
-        android:background="@android:color/holo_blue_bright" android:orientation="vertical">
-        <!--<ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_launcher"-->
-            <!--android:contentDescription="test" android:id="@+id/icon"/>-->
+        android:background="@color/bg" android:orientation="horizontal">
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/ic_launcher"
+            android:contentDescription="test" android:id="@+id/icon"/>
         <TextView android:id="@+id/text" android:gravity="center" android:layout_width="match_parent" android:layout_height="50dp" tools:text="Test"/>
     </LinearLayout>
 </FrameLayout>
